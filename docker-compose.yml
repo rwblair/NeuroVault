@@ -7,10 +7,13 @@ data:
   image: cogniteev/echo
   volumes:
     - /var/www/image_data
+    - ./images:/var/www/image_data/images
+    - ./pycortex:/usr/local/share/pycortex
 
 uwsgi:
   restart: always
-  image: neurovault/neurovault
+  image: neurovault/neurovault_fs
+  env_file: .env
   volumes_from:
     - data
   volumes:
@@ -19,6 +22,7 @@ uwsgi:
   links:
     - db
     - redis
+    working_dir: /code
 
 nginx:
   restart: always
